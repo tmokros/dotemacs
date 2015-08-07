@@ -1,5 +1,7 @@
-# Compiled
+/el-get
 *.elc
-
-# Packaging
-.cask
+/elpa
+*~
+/custom.el
+/ac-comphist.dat
+/url
