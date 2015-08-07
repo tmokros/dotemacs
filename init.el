@@ -48,7 +48,8 @@
 
 (setq el-get-user-package-directory "~/.emacs.d/el-get-init")
 
-(setq mok/el-get-packages '(;; git:
+(setq mok/el-get-packages '(async
+                            ;; git:
                             magit gist
                             ;; python:
                             jedi pymacs ropemacs virtualenv feature-mode elpy
