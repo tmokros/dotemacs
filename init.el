@@ -25,51 +25,67 @@
 ;;; Code:
 
 
+(server-start)
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(setq use-package-always-ensure t)
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+
 (setq custom-file (expand-file-name "~/.emacs.d/custom.el"))
 (load custom-file 'noerror)
 
-(server-start)
+(setq gnus-init-file "~/.emacs.d/gnus")
 
-(require 'package)
-;(add-to-list 'package-archives
-;             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(use-package magit
+  :bind ("C-c m" . magit-status)
+  :demand)
+(use-package gist)
+(use-package pymacs
+  ; :config (pymacs-load "ropemacs" "rope-")
+  )
+;(use-package ropemacs)
+(use-package feature-mode)
+(use-package elpy)
+(use-package jedi
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:setup-keys t)
+  (setq jedi:complete-on-dot t))
+(use-package company :demand)
+(use-package company-jedi)
+(use-package helm
+  :config
+  (helm-mode 1)
+  :demand)
+(use-package bbdb)
+(use-package htmlize)
+(use-package mmm-mode)
+(use-package org)
+(use-package slime)
 
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (let (el-get-master-branch)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (el-get-elpa-build-local-recipes))
-
-
-(setq el-get-user-package-directory "~/.emacs.d/el-get-init")
-
-(setq mok/el-get-packages '(async
-                            ;; git:
-                            magit gist
-                            ;; python:
-                            jedi pymacs ropemacs virtualenv feature-mode elpy
-                            ;; completion:
-                            auto-complete helm
-                            ;; misc:
-                            bbdb htmlize mmm-mode gnus org-mode
-                            ;; lisp:
-                            slime))
-
-;; Required python packages: jedi rope?
-
-(el-get 'sync mok/el-get-packages)
-
-(add-to-list 'el-get-info-paths-to-add "/.emacs.d/el-get/el-get")
 
 (setq custom-theme-directory "~/.emacs.d/themes/")
 
 (setq-default indent-tabs-mode nil
               tab-width 4)
+
+(setq gnus-init-file "~/.emacs.d/gnus")
 
 
 
